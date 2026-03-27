@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Vigilante", "Vigilante\", "{039E107E-36ED-42A0-B005-CD31A00A80B5}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_60615"
+		Debug.AspNetCompiler.PhysicalPath = "Vigilante\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_60615\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_60615"
+		Release.AspNetCompiler.PhysicalPath = "Vigilante\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_60615\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "60615"
+		SlnRelativePath = "Vigilante\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{039E107E-36ED-42A0-B005-CD31A00A80B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{039E107E-36ED-42A0-B005-CD31A00A80B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {00EED2EA-6D27-41BE-B5A9-82EEF1BBDCD5}
+	EndGlobalSection
+EndGlobal

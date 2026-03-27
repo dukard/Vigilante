@@ -1,0 +1,340 @@
+
+html {
+    font-family: ariel;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%
+}
+
+body {
+    margin: 0;
+}
+
+    menu, article, nav, section {
+        display: block
+    }
+
+    main {
+        display: block
+    }
+
+a {
+    text-decoration: none;
+}
+
+#ventana2 {
+    margin-left: 15px;
+    /*background-color:#00FF00;*/
+    background-color: #FFFFFF;
+}
+
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: arial;
+  background-color: #FFFFFF;
+}
+
+body.is-froze {
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+
+.main {
+  overflow: hidden;
+  position: relative;
+  padding:0;
+  width: 100%;
+  /*width: calc(100% - 60px);*/
+  height: 100vh;
+  /*margin-left: 60px;*/
+  background-color: #FFFFFF;
+  transition: 0.55s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transform: scale(1) translate3d(0, 0, 0);
+  -webkit-clip-path: inset(0 0 0 0);
+          clip-path: inset(0 0 0 0);
+  will-change: width, height, opacity, transform, clip-path;
+  z-index: 1;
+}
+.main.is-active {
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  /*width: calc(100vw - 60px);*/
+  pointer-events: none;
+  opacity: 0.25;
+  transform: scale(0.9) translate3d(60%, 0, 0);
+}
+@media (min-width: 600px) {
+  .main.is-active {
+    transform: scale(0.9) translate3d(40%, 0, 0);
+  }
+}
+.main.is-transition-out {
+  -webkit-clip-path: inset(0 0 0 100%);
+          clip-path: inset(0 0 0 100%);
+}
+
+
+
+.article {
+    /*padding: 1.5rem;*/
+    padding: 0;
+    position: relative;
+    height: 100%;
+    /*background-color: #FF0000;*/
+    background-color: #FFFFFF;
+}
+@media (min-width: 600px) {
+  .article {
+    padding: 6vmin;
+  }
+}
+.article:not(:last-of-type):after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 1.5rem;
+  width: 50px;
+  height: 100%;
+  background-color: #FFFFFF;
+}
+@media (min-width: 600px) {
+  .article:not(:last-of-type):after {
+    left: 6vmin;
+  }
+}
+
+
+.nav__bar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 100vh;
+    border-right: 1px solid rgba(125, 135, 168, 0.25);
+    /*background-color: #191b22;*/
+    background-color: #002451;
+    z-index: 99;
+}
+
+.nav__trigger {
+  display: block;
+  position: absolute;
+  top: 5%;
+  left: 14px;
+  padding: 8px 0;
+  margin-top: -10px;
+  transition: 0.2s ease-in-out;
+  z-index: 99;
+}
+.nav__trigger .bars {
+  position: relative;
+}
+    .nav__trigger .bars, .nav__trigger .bars:before, .nav__trigger .bars:after {
+        width: 28px;
+        height: 4px;
+        background-color: #7d87a8;
+        transition: 0.2s ease-in-out;
+        border-radius: 4px;
+    }
+.nav__trigger .bars:before, .nav__trigger .bars:after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
+.nav__trigger .bars:before {
+  transform: translateY(-8px);
+}
+.nav__trigger .bars:after {
+  transform: translateY(8px);
+}
+.nav__trigger.is-active {
+  transform: rotate(-45deg);
+}
+.nav__trigger.is-active .bars:before, .nav__trigger.is-active .bars:after {
+  transform: translateX(0) rotate(-90deg);
+}
+
+.nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #191b22;
+    /*background-color: #00FF00;*/
+    z-index: 0;
+    background-image: url(../img/wall5.jpg);
+    background-size: cover;
+    background-size: 100% 100%;
+    /*background-image: url(../img/4.png);*/
+}
+
+.nav__list {
+  overflow: hidden;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  padding-left: 60px;
+  list-style: none;
+  font-family: arial;
+  transform: translateY(-50%);
+}
+.nav__list .nav__item {
+  padding: 0.5rem 1rem;
+}
+@media (min-width: 600px) {
+  .nav__list .nav__item {
+    width: 33.3333333333%;
+    padding: 0.5rem 1rem;
+  }
+}
+.nav__list a {
+  display: inline-block;
+  color: #7d87a8;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.nav__list a:hover {
+  color: #b1b7cb;
+}
+.nav__list a.is-active {
+  color: #d2d5e1;
+}
+@media (min-width: 600px) {
+  .nav__list a {
+    font-size: 1.5rem;
+  }
+}
+
+/*.screen {
+    margin: 0;
+    padding-top: 80px;
+    padding-left: 80px;
+}*/
+
+div.screen {
+    /*margin: 0 auto;
+    width: 23.5em;
+    height: 35.25em;
+    overflow: hidden;
+    position: relative;
+    top: 10%;
+    background-color: #333333;
+    background-color: #FF0000;
+    -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);*/
+
+    width:33.3333%;
+    overflow: hidden;
+    position: absolute;
+    /*top: 25%;*/
+    left: 70px;
+    margin: 0;
+    list-style: none;
+    font-family: arial;
+}
+
+
+nav.main-nav {
+    /*background-color: #FF0000;*/
+    /*position: absolute;
+        left: 0;
+        top: 0;*/
+        z-index: 0;
+        height: 100%;
+        width: 100%;
+        padding: 2em;
+
+        -webkit-opacity: 0;
+        -moz-opacity: 0;
+        opacity: 0;
+        -webkit-transform: scale(0.85);
+        -ms-transform: scale(0.85);
+        transform: scale(0.85);
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+}
+
+
+    nav.main-nav.toggled {
+        display: block;
+        z-index: 10;
+        -webkit-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+        -webkit-opacity: 1;
+        -moz-opacity: 1;
+        opacity: 1;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+    }
+    
+
+
+
+    nav.main-nav ul {
+        padding: 2em 0 0 0;
+    }
+
+
+
+
+.main-nav ul li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+
+
+
+
+nav.main-nav ul li a {
+    font-size: 1.25em;
+    color: #fff;
+    padding: 1em 0;
+    font-weight: 300;
+    display: block;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+
+
+
+    nav.main-nav ul li a:last-child {
+        border: none;
+    }
+
+
+
+
+
+    nav.main-nav ul li a:hover {
+        -webkit-opacity: 0.45;
+        -moz-opacity: 0.45;
+        opacity: 0.45;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+        padding: 1em;
+    }

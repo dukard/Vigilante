@@ -1,0 +1,305 @@
+<html>
+<head>
+  <title>menu4</title>
+  <link rel='stylesheet' href='../css/elestilo.css' />  
+</head>
+<body>
+    <div class="nav__bar">
+        <a href="#" class="nav__trigger">
+            <div class="bars"></div>
+        </a>
+    </div>
+
+    <main class="main">
+        <section class="content">
+            <article class="article">
+                <center>
+                    <iframe id="ventana2" src="" scrolling="auto" frameborder="0"></iframe>
+                </center>
+            </article>
+        </section>
+    </main>
+
+    <nav class="nav">
+
+        <!--
+    <ul class="nav__list">
+        <li class="nav__item"><a href="#">Sriracha</a></li>
+        <li class="nav__item"><a href="#">Wolf Moon</a></li>
+        <li class="nav__item"><a href="#">Raw Denim</a></li>
+        <li class="nav__item"><a href="#">Mumblecore</a></li>
+        <li class="nav__item"><a href="#">Fingerstache</a></li>
+        <li class="nav__item"><a href="#">Chillwave</a></li>
+    </ul>
+    -->
+
+        <div class="screen">
+            <nav class="main-nav" role="navigation">
+                <ul>
+                    <li class="liga"><a id="m1" href="#"><span>My Account</span></a></li>
+                    <li class="liga"><a id="m2" href="#"><span>Billing Information</span></a></li>
+                    <li class="liga"><a id="m3" href="#"><span>Order Tracker</span></a></li>
+                    <li class="liga"><a id="m4" href="#"><span>Change Password</span></a></li>
+                    <li class="liga"><a id="m5" href="#"><span>Log Out</span></a></li>
+                </ul>
+            </nav>
+        </div>
+
+
+    </nav>
+
+
+    <script src='../js/classList.min.js'></script>
+    <script src='../js/smoothscroll.js'></script>
+    <script id="rendered-js">
+        let navigation = {
+            // Variables
+            $navTrigger: document.querySelector('.nav__trigger'),
+            $nav: document.querySelector('.nav'),
+            /////$navItems: document.querySelectorAll('.nav__item a'),
+            $navItems2: document.querySelectorAll('.liga a'),
+            $main: document.querySelector('.main'),
+            transitionEnd: 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+            isOpeningNav: false,
+
+            init() {
+                let self = this;
+
+                // Reset overflow and height on load
+                self.$main.style.overflow = 'auto';
+                self.$main.style.height = 'auto';
+
+
+                // Handle scroll events
+                window.addEventListener('scroll', e => {
+                    if (window.scrollY == 0 && self.isOpeningNav) {
+                        self.isOpeningNav = false;
+
+                        // Add a small delay
+                        setTimeout(function () {
+                            self.openNavigation();
+                        }, 150);
+                    }
+                });
+
+                // Handle .nav__trigger click event
+                self.$navTrigger.addEventListener('click', e => {
+                    e.preventDefault();
+
+                    if (!self.$navTrigger.classList.contains('is-active')) {
+                        if (window.scrollY !== 0) {
+                            // Scroll to top
+                            window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+
+                            // Enable opening nav
+                            self.isOpeningNav = true;
+                        } else {
+                            self.openNavigation();
+                        }
+                    } else {
+                        self.closeNavigation();
+                    }
+                });
+
+                /*
+                // Handle .nav__item click events
+                self.$navItems.forEach(navLink => {
+                    navLink.addEventListener('click', function (e) {
+                        e.preventDefault();
+
+                        // Remove is-active from all .nav__items
+                        self.$navItems.forEach(el => {
+                            el.classList.remove('is-active');
+                        });
+
+                        // Ad is-active to clicked .nav__item
+                        this.classList.add('is-active');
+
+                        // Transition the page
+                        self.transitionPage();
+                    });
+                });
+                */
+
+                // Handle .nav__item2 click events
+                self.$navItems2.forEach(navLink => {
+                    navLink.addEventListener('click', function (e) {
+                        e.preventDefault();
+
+                        // Remove is-active from all .liga
+                        self.$navItems2.forEach(el => {
+                            el.classList.remove('is-active');
+                        });
+
+                        // Ad is-active to clicked .liga
+                        this.classList.add('is-active');
+
+                        // Transition the page
+                        self.transitionPage();
+                    });
+                });
+            },
+
+            
+
+            openNavigation() {
+                let self = this;
+
+                // .nav--trigger active
+                self.$navTrigger.classList.add('is-active');
+
+                // body froze
+                document.body.classList.add('is-froze');
+
+                // Remove old inline styles
+                if (self.$main.style.removeProperty) {
+                    self.$main.style.removeProperty('overflow');
+                    self.$main.style.removeProperty('height');
+                } else {
+                    self.$main.style.removeAttribute('overflow');
+                    self.$main.style.removeAttribute('height');
+                }
+
+                // .main active
+                self.$main.classList.add('is-active');
+            },
+
+            closeNavigation() {
+                let self = this;
+
+                // .nav--trigger inactive
+                self.$navTrigger.classList.remove('is-active');
+
+                // .main inactive
+                self.$main.classList.remove('is-active');
+                self.$main.addEventListener('transitionend', e => {
+                    if (e.propertyName == 'transform' && !self.$navTrigger.classList.contains('is-active')) {
+                        // Reset overflow and height
+                        self.$main.style.overflow = 'auto';
+                        self.$main.style.height = 'auto';
+
+                        // body unfroze
+                        document.body.classList.remove('is-froze');
+                    }
+                });
+
+                // no-csstransitions fallback
+                if (document.documentElement.classList.contains('no-csstransitions')) {
+                    // .main inactive
+                    self.$main.classList.remove('is-active');
+
+                    // body unfroze
+                    document.body.classList.remove('is-froze');
+                }
+            },
+
+            transitionPage() {
+                let self = this;
+
+                // .main transitioning
+                self.$main.classList.add('is-transition-out');
+                self.$main.addEventListener('transitionend', e => {
+                    if (e.propertyName == 'clip-path') {
+                        if (self.$main.classList.contains('is-transition-in')) {
+                            self.$main.classList.remove('is-transition-in');
+                            self.$main.classList.remove('is-transition-out');
+                            self.closeNavigation();
+                        }
+
+                        if (self.$main.classList.contains('is-transition-out')) {
+                            self.$main.classList.remove('is-transition-out');
+
+                            // Add new content to .main
+
+                            setTimeout(function () {
+                                self.$main.classList.add('is-transition-in');
+                            }, 500);
+                        }
+                    }
+                });
+            }
+        };
+
+
+        navigation.init();
+        //# sourceURL=pen.js
+    </script>
+    <script src="../js/jquery.min.js.download"></script>
+    <script id="rendered-js">
+        //Custom JS
+        $(document).ready(function () {
+
+            var ventana = false;
+            var pagina = "";
+            /*var ddrs = new Array();
+            ddrs[0] = ".aspx";
+            ddrs[1] = ".aspx";
+            ddrs[2] = ".aspx";
+            ddrs[3] = ".aspx";
+            ddrs[4] = ".aspx";
+            ddrs[5] = ".aspx";
+            ddrs[6] = ".aspx";
+            ddrs[7] = ".aspx";
+            ddrs[8] = ".aspx";
+            ddrs[9] = ".aspx";*/
+
+            $("#ventana2").attr("width", (screen.width - 80));
+            $("#ventana2").attr("height", (screen.height - 180));
+
+
+            $('a.nav__trigger').click(function (e) {
+
+                if (ventana) {
+                    setTimeout(function () {
+                        $('nav.main-nav').toggleClass('toggled');
+                    }, 50);
+                }
+                else {
+                    setTimeout(function () {
+                        $('nav.main-nav').toggleClass('toggled');
+                    }, 300);                    
+                }
+
+                ventana = !ventana;
+
+                e.preventDefault();
+            }); //target-burger-click
+
+
+            $('.liga a').click(function (e) {
+
+                switch ($(this).attr("id")) {
+                    case "m1": pagina=".aspx"; break;
+                    case "m2": pagina = ".aspx"; break;
+                    case "m3": pagina = ".aspx"; break;
+                }
+
+                $("#ventana2").attr("src", pagina);
+                
+                if (ventana) {
+                    setTimeout(function () {
+                        $('nav.main-nav').toggleClass('toggled');
+                    }, 350);
+                }
+                else {
+                    setTimeout(function () {
+                        $('nav.main-nav').toggleClass('toggled');
+                    }, 700);
+                }
+
+                ventana = !ventana;
+
+                e.preventDefault();
+
+            });
+
+
+
+
+        }); //doc-rdy
+//# sourceURL=pen.js
+    </script>
+
+</body>
+
+</html>

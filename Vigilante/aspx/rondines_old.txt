@@ -1,0 +1,401 @@
+package org.dukard.vigilante;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ScrollView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
+import com.google.gson.Gson;
+
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.MarshalBase64;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Menu02Fragment extends Fragment {
+
+    private menuactivity parentActivity;
+    private View parentView;
+    String cad_base2;
+    String[] datos;
+    private List<String> alertalista;
+    private SwipeMenuListView mListView;
+    LinearLayout.LayoutParams lp1;
+    ScrollView sc;
+    LinearLayout cont;
+
+    Process process,process2;
+    static String servidor="www.carone.com.mx";
+    static String servidor2="192.168.11.171";
+    static String servidor3="carone.com.mx";
+    String STR,Err;
+    Gson gson3;
+    eltipo03 json3;
+    private List<String> scanslista;
+    LinearLayout ll,lalista;
+    menuactivity obj;
+
+
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        int i;
+
+        try {
+            parentActivity = (menuactivity) getActivity();
+            parentView = inflater.inflate(R.layout.menu02, container, false);
+            ll=parentView.findViewById(R.id.cont);
+            lalista=parentView.findViewById(R.id.lalista);
+            //obj=new menuactivity("rondines");
+            parentActivity.casoNFC="rondines";
+
+            if(hayono()) {
+                new Menu02Fragment.android_to_ws20("get_scans_locations",parentActivity.iduser).execute();
+            }
+            else {
+                Toast.makeText(getContext(), "No se pudo sincronizar 10...", Toast.LENGTH_LONG).show();
+            }
+
+        }
+        catch (Exception e) {
+            //mensajero.message(getActivity(), e.toString(), true);
+            Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+        return parentView;
+    }
+
+
+    private void pormientras(String resultado){
+        try {
+            int i,j;
+            gson3=new Gson();
+            json3=gson3.fromJson(resultado,eltipo03.class);
+
+            TextView txt;
+            View separador;
+            final float scale = getResources().getDisplayMetrics().density;
+            TableLayout tv;
+            TableRow trow;
+            tv = new TableLayout(getContext());
+            tv.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+            ll.removeAllViews();
+            lalista.setBackground( getResources().getDrawable(R.drawable.border6));
+            Context contexto=getContext();
+
+            String[] etiquetas = {"ID: ", "IDUSER: ", "SERIAL: ", "REGISTRO_NFC: ", "LONGITUD: ","LATITUD: ","UBICACIÒN: ","FECHA: ","HORA: "};
+            String[] contenido=new String[9];
+
+            for(i=0;i<json3.getscansinfo.size();i++){
+
+                contenido[0]=json3.getscansinfo.get(i).id;
+                contenido[1]=String.valueOf(json3.getscansinfo.get(i).iduser);
+                contenido[2]=json3.getscansinfo.get(i).serial;
+                contenido[3]=json3.getscansinfo.get(i).registroNFC;
+                contenido[4]=json3.getscansinfo.get(i).longitud;
+                contenido[5]=json3.getscansinfo.get(i).latitud;
+                contenido[6]=json3.getscansinfo.get(i).ubicacion;
+                contenido[7]=json3.getscansinfo.get(i).fecha;
+                contenido[8]=json3.getscansinfo.get(i).hora;
+
+                for(j=0;j<etiquetas.length;j++){
+                    trow = new TableRow(contexto);
+                    trow.setLayoutParams((new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT)));
+                    txt=new TextView(contexto);
+                    txt.setTextAppearance(contexto, R.style.estilo5);
+                    txt.setText(etiquetas[j]);
+                    txt.setPadding(0, 0, 10, 0);
+                    trow.addView(txt);
+                    txt=new TextView(contexto);
+                    txt.setTextAppearance(getContext(), R.style.estilo6);
+                    txt.setText(contenido[j]);
+                    txt.setPadding(0, 0, 10, 0);
+                    trow.addView(txt);
+                    tv.addView(trow);
+                }
+
+                separador=new View(contexto);
+                lp1=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,(int)(scale));
+                separador.setLayoutParams(lp1);
+                separador.setBackgroundColor(Color.WHITE);
+                tv.addView(separador);
+            }
+
+            ll.addView(tv);
+
+        }
+        catch (Exception e) {
+            Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+
+
+    private class android_to_ws20 extends AsyncTask<String, Object, Object > {
+
+        String METHOD_NAME="";
+        String SOAP_ACTION="http://tempuri.org/";
+        final String NAMESPACE="http://tempuri.org/";
+        final String URL="http://prospectos.carone.com.mx:8880/ws4/servicioweb.asmx";
+        String idvigilante;
+
+        public android_to_ws20(String metodo,String idvigilante) {
+            this.METHOD_NAME=metodo;
+            this.SOAP_ACTION += metodo;
+            this.idvigilante=idvigilante;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String resultado="";
+
+            try {
+                SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
+                request.addProperty("idvigilante", idvigilante);
+                SoapSerializationEnvelope sobre = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+                new MarshalBase64().register(sobre);
+                sobre.dotNet = true;
+                sobre.setOutputSoapObject(request);
+                HttpTransportSE transporte;
+                transporte = new HttpTransportSE(URL);
+                transporte.call(SOAP_ACTION, sobre);
+                SoapPrimitive r = (SoapPrimitive) sobre.getResponse();
+                resultado = r.toString();
+            }
+            catch (Exception e) {
+                Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
+                this.cancel(true);
+            }
+
+            return resultado;
+        }
+
+        @Override
+        protected void onPostExecute(Object result) {
+            try {
+                if(result.toString().indexOf("Sin Datos") >= 0){
+                    Toast.makeText(getActivity(), "Sin Datos", Toast.LENGTH_LONG).show();
+                }
+                else  if(result.toString().indexOf("Error:") >= 0){
+                    Toast.makeText(getActivity(), result.toString(), Toast.LENGTH_LONG).show();
+                }
+                else if(result.toString().indexOf("Error") >= 0){
+                    Toast.makeText(getActivity(), result.toString(), Toast.LENGTH_LONG).show();
+                }
+                else if(result.toString().compareTo("")==0){
+                    Toast.makeText(getActivity(), result.toString(), Toast.LENGTH_LONG).show();
+                }
+                else{
+                    pormientras(result.toString());
+                }
+                super.onPostExecute(result);
+            }
+            catch (Exception e) {
+                Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
+                this.cancel(true);
+            }
+        }
+    }
+
+
+
+    private boolean hayono(){
+        ConnectivityManager cm =(ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()&&netInfo.isAvailable()&&netInfo.isConnected()){
+            try {
+                process = Runtime.getRuntime().exec("/system/bin/ping -c 1 " + servidor);
+                int mPingResult = process.waitFor();
+                if(mPingResult == 0){
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                    int i,l;
+                    char[] buffer = new char[4096];
+                    StringBuffer output = new StringBuffer();
+                    while ((i = reader.read(buffer)) > 0)
+                        output.append(buffer, 0, i);
+                    reader.close();
+                    STR = output.toString();
+                    l=STR.indexOf("received,");
+                    if(l>0){
+                        l=Integer.parseInt((STR.substring((l-3),l)).trim());
+                        if(l>0){
+                            return true;
+                        }
+                        else{
+                            if(hayono2()) return true;
+                            return false;
+                        }
+                    }
+                    else{
+                        return false;
+                    }
+                }else{
+                    return false;
+                }
+            }
+            catch (IOException erro)
+            {
+                //reiniciar();
+                return false;
+            }
+            catch (Exception e) {
+                //reiniciar();
+                return false;
+            }
+        }
+        else{
+            Err="Network no v·lido";
+            return false;
+        }
+    }
+
+    private boolean hayono2(){
+        ConnectivityManager cm =(ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()){
+            try {
+                process2 = Runtime.getRuntime().exec("/system/bin/ping -c 1 " + servidor3);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(process2.getInputStream()));
+                int i,l;
+                char[] buffer = new char[4096];
+                StringBuffer output = new StringBuffer();
+                while ((i = reader.read(buffer)) > 0)
+                    output.append(buffer, 0, i);
+                reader.close();
+                STR = output.toString();
+                l=STR.indexOf("received,");
+                if(l>0){
+                    l=Integer.parseInt((STR.substring((l-3),l)).trim());
+                    if(l>0){
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
+                }
+                else{
+                    return false;
+                }
+            }
+            catch (IOException e) {
+                Err=e.toString();
+                //reiniciar();
+                return false;
+            }
+            catch (Exception e) {
+                //reiniciar();
+                return false;
+            }
+        }
+        else{
+            Err="Network no v·lido";
+            return false;
+        }
+    }
+
+
+
+
+
+    private int dp2px(int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,getResources().getDisplayMetrics());
+    }
+
+
+
+
+
+
+
+}
+
+
+=============================================================================
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/plantilla02"
+    tools:context=".Menu02Fragment">
+    <!--     android:background="@drawable/fondon"    -->
+    <!-- tools:context=".fragmentos.Menu02Fragment     -->
+
+
+
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+
+        <LinearLayout
+            android:id="@+id/lalista"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <ScrollView
+                android:id="@+id/sc"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:background="@drawable/border5"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1" >
+
+                <LinearLayout
+                    android:id="@+id/cont"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center" />
+
+            </ScrollView>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

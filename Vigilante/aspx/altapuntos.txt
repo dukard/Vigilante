@@ -1,0 +1,455 @@
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
+using intra_library;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Text.RegularExpressions;
+using System.Data;
+using System.Data.SqlClient;
+using intra_library;
+using System.IO;
+using ClosedXML.Excel;
+
+public partial class aspx_altapuntos : System.Web.UI.Page
+{
+    DataTable dt1;
+    funciones obj;
+    string error;
+
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (Page.IsPostBack)
+        {
+            try
+            {
+                //
+            }
+            catch (Exception er)
+            {
+                Response.Write(er.ToString());
+            }
+        }
+        else
+        {
+            //Response.Write(Request.QueryString["iduser"] + "<br/><br/>" + Request.QueryString["idrondin"]);
+            if ((Request.QueryString["iduser"] != null) || (Request.QueryString["iduser"] != "") || (Request.QueryString["idrondin"] != null) || (Request.QueryString["idrondin"] != ""))
+            {
+                iduser.Value = Request.QueryString["iduser"];
+                idrondin.Value = Request.QueryString["idrondin"];
+                labhead.Text = "Iduser: " + iduser.Value + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "Idrondin: " + idrondin.Value;
+                cmd.Value = "nuevo";
+            }
+        }
+
+        llena_datos();
+    }
+
+
+    protected void llena_datos()
+    {
+        obj = new funciones();
+        try
+        {            
+            if (show_info())
+            {
+                gv3.DataSource = dt1;
+                dt1.Dispose();
+                gv3.DataBind();
+            }
+            else
+            {
+                if (obj.error != "Sin Datos")
+                {
+                    Response.Write(obj.error);
+                }
+            }
+
+            /*if (show_facebook())
+            {
+                gv.DataSource = dt1;
+                obj.dt.Dispose();
+                gv.DataBind();
+                obj = null;
+
+                if (cmd.Value == "exportar")
+                {
+                    cmd.Value = "";
+                    var wb = new XLWorkbook();
+                    wb.Worksheets.Add(dt1, "Vigilantes");
+                    Response.Clear();
+                    Response.ClearHeaders();
+                    Response.Buffer = true;
+                    Response.Charset = "";
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    Response.AddHeader("content-disposition", "attachment;filename=Lista_vigilantes.xlsx");
+                    //Response.ContentEncoding = Encoding.UTF8;
+                    using (MemoryStream memoryStream = new MemoryStream())
+                    {
+                        memoryStream.Capacity = (int)memoryStream.Length;
+                        wb.SaveAs(memoryStream);
+                        memoryStream.WriteTo(Response.OutputStream);
+                        Response.Flush();
+                        //Response.End();
+                        Response.SuppressContent = true;
+                    }
+                }
+            }
+            else
+            {
+                if (error == "Sin Datos")
+                {
+                    pan3.Visible = false;
+                    Response.Write("<br/><br/><br/><center><input id='boton' type='button' value='Nuevo' onclick='nuevo();' /></center>");
+                    obj = null;
+                }
+                else
+                {
+                    Response.Write(error);
+                    obj.dt.Dispose();
+                    obj = null;
+                }
+            }*/
+        }
+        catch (Exception er)
+        {
+            Response.Write(er.ToString());
+            obj = null;
+        }
+    }
+
+    private bool show_info()
+    {
+        try
+        {
+            if (obj.conexion("cons", "select id,serial,asignada from Tregistro_tarjetasNFC with (nolock) where asignada='No' order by id"))
+            {
+                if (obj.dt.Rows.Count < 1)
+                {
+                    Response.Write("<center>Sin Datos</center>");
+                    obj.dt.Dispose();
+                    return false;
+                }
+                else
+                {
+                    dt1 = obj.dt.Copy();
+                    obj.dt.Dispose();
+                    return true;
+                }
+            }
+            else
+            {
+                Response.Write("<center>" + obj.error + "</center>");
+                return false;
+            }
+        }
+        catch (Exception er)
+        {
+            Response.Write(er.ToString());
+            return false;
+        }
+    }
+
+
+    protected void data_enlace3(object sender, GridViewRowEventArgs e)
+    {
+        try
+        {
+            if (e.Row.DataItemIndex > -1)
+            {
+                if (e.Row.DataItemIndex == 0)
+                {
+                    gv3.HeaderRow.Cells[0].Text = "Id";
+                    gv3.HeaderRow.Cells[0].HorizontalAlign = HorizontalAlign.Left;
+                    gv3.HeaderRow.Cells[1].Text = "Serial";
+                    gv3.HeaderRow.Cells[1].HorizontalAlign = HorizontalAlign.Left;
+                    gv3.HeaderRow.Cells[2].Text = "Asignada";
+                    gv3.HeaderRow.Cells[2].HorizontalAlign = HorizontalAlign.Left;
+                }
+
+                Panel div = new Panel();
+                String ids = e.Row.Cells[0].Text.ToString();
+                div.ID = "nek0_" + ids;
+                div.Controls.Add(new LiteralControl(ids));
+                e.Row.Cells[0].Text = "";
+                e.Row.Cells[0].Controls.Add(div);
+                div = null;
+
+                div = new Panel();
+                div.ID = "nek1_" + ids;
+                div.Controls.Add(new LiteralControl(e.Row.Cells[1].Text.Trim()));
+                e.Row.Cells[1].Text = "";
+                e.Row.Cells[1].Controls.Add(div);
+                div = null;
+
+                div = new Panel();
+                div.ID = "nek2_" + ids;
+                div.Controls.Add(new LiteralControl(e.Row.Cells[2].Text.Trim()));
+                e.Row.Cells[2].Text = "";
+                e.Row.Cells[2].Controls.Add(div);
+                div = null;
+
+            }
+        }
+        catch (Exception er)
+        {
+            Response.Write(er.ToString());
+        }
+    }
+
+
+
+
+
+    /*
+     drop table Trondines
+
+
+
+    create table Trondines(
+    id int identity,
+    iduser int,
+    marc varchar(50),
+    agen varchar(50),
+    horarondin varchar(5),
+    fecha varchar(20),
+    hora varchar(20)
+    )
+
+
+
+    select * from Trondines
+     */
+
+
+}
+
+
+
+
+
+==================================================================================================================================
+
+
+
+
+
+
+<%@ Page Language="C#" AutoEventWireup="true" CodeFile="altapuntos.aspx.cs" Inherits="aspx_altapuntos" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <style>
+        body{
+            color:#FFFFFF;
+        }
+
+        #pan20{
+            width:350px;
+            height: 20vh;
+        }
+
+        #pan40{
+            width:400px;
+            height: 20vh;
+        }
+    </style>
+
+    <title></title>
+    <script type="text/javascript" src="../js/jquery-3.6.0.js"></script>
+    <script type="text/javascript">
+        var x, igual;
+        x = $(document);
+        x.ready(def_eventos);
+
+        function def_eventos() {
+            otravez3();
+            $("#gv3").attr("style", "border-collapse:collapse;");
+            $("[id^='gv3_nek0']").attr("style", "padding: 0px 0px 0px 5px;overflow:hidden;height:20px;width:50px;");
+            $("[id^='gv3_nek1']").attr("style", "padding: 0px 0px 0px 5px;overflow:hidden;height:20px;width:120px;");
+            $("[id^='gv3_nek2']").attr("style", "padding: 0px 0px 0px 5px;overflow:hidden;height:20px;width:120px;");
+            $("#encab0").attr("style", "font-size:15px;background-color:#FFFFFF;color:#FFFFFF");
+            $("[class^='hor']").attr("style", "font-size:15px;border-right-style:groove;border-left-style:groove;border-bottom-style:groove;border-right-width:thin;border-left-width:thin;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;color:#000000;background-color:#FFFFFF;");
+            $("[class^='hor']").hover(estilo1, estilo2);
+            $("[class^='hor']").click(memclick);
+
+            $("#boton3").attr("value", "Cancelar");
+            $("#larow2").attr("style", "font-size:15px;border-right-style:groove;border-left-style:groove;border-bottom-style:groove;border-right-width:thin;border-left-width:thin;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;background-color:#002451;color:#FFFFFF");
+            $("#larow3").attr("style", "font-size:15px;border-right-style:groove;border-left-style:groove;border-bottom-style:groove;border-right-width:thin;border-left-width:thin;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;background-color:#002451;color:#FFFFFF");
+            //$("#pan20").attr("width", (((screen.width) * 95) / 100));
+            //$("#pan20").attr("height", ((screen.height * 80) / 100));
+
+            if (($("#cmd").val() == "") || ($("#cmd").val() == "exportar")) $("#snuevo").hide();
+            else {
+                switch ($("#cmd").val()) {
+                    case "nuevo": $("#boton2").attr("value", "Agregar"); break;
+                    case "editar": $("#boton2").attr("value", "Editar"); break;
+                }
+            }
+        }
+
+
+
+        function memclick() {
+
+            actual = $(this).attr("id");
+
+            $("[class^='hor']").attr("style", "font-size:15px;border-right-style:groove;border-left-style:groove;border-bottom-style:groove;border-right-width:thin;border-left-width:thin;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;color:#000000;background-color:#FFFFFF;");
+            $("#" + actual).attr("style", "font-size:15px;font-weight: bold;border-right-style:groove;border-left-style:groove;border-bottom-style:groove;border-right-width:thin;border-left-width:thin;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;color:#000000;background-color:#DBBCF8;cursor:pointer;");
+
+            if ($("#memoria").val() != "") {
+                if ($("#memoria").val() == actual) {
+                    //es igual
+                    $("#" + actual).attr("style", "font-size:15px;border-right-style:groove;border-left-style:groove;border-bottom-style:groove;border-right-width:thin;border-left-width:thin;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;color:#000000;background-color:#FFFFFF;");
+                    $("#memoria").val("");
+                    $("#ids").val("");
+                    return;
+                }
+                else {
+                    //no es igual
+
+                }
+            }
+
+
+            /////////$("#marca").val($.trim($("#" + $(this).attr("id") + " td:nth-child(4)").text().toString()));
+            ////////$("#agencia").val($.trim($("#" + $(this).attr("id") + " td:nth-child(5)").text().toString()));
+            $("#memoria").val(actual);
+            $("#ids").val($.trim($("#" + actual + " td:nth-child(1)").text().toString()));
+            $("#serial").val($.trim($("#" + actual + " td:nth-child(2)").text().toString()));
+        }
+
+        function act_boton4() {
+
+            if (($("#ids").val() == "") || ($("#serial").val() == "") || ($("#t1").val() == "")) return;
+
+            $("#gv40").append("<tr bgcolor='#FFFFFF' style='color:#000000;'><td>" + $("#ids").val() + "</td><td>" + $("#serial").val() + "</td><td>" + $("#t1").val() + "</td></tr>");
+            $("#t1").val("");
+
+            var i=0;
+            $("#gv3 tr").each(function () {
+                if (i > 0) {
+                    //alert($.trim($(this).children(":eq(0)").text()) + " -- " + $("#ids").val());
+
+                    if ($.trim($(this).children(":eq(0)").text()) == $("#ids").val()) {
+                        $(this).hide();
+                    }
+                }
+                i++;
+            }
+            );
+        }
+
+
+
+
+        function otravez3() {
+            var i;
+
+            i = 0;
+            $("#gv3 tr").each(function () {
+                if (i > 0) {
+                    $(this).attr("id", $.trim($(this).children(":eq(0)").text()) + "_" + i);
+                    $(this).attr("class", "hor" + i);
+                    $(this).children(":first").attr("id", "ver" + i);
+                }
+                else {
+                    $(this).attr("id", "encab0");
+                }
+                i++;
+            }
+            );
+        }
+
+
+
+        function estilo1() {
+            $("#" + $(this).attr("id")).attr("style", "font-size:15px;font-weight: bold;border-right-style:groove;border-left-style:groove;border-bottom-style:groove;border-right-width:thin;border-left-width:thin;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;color:#000000;background-color:#DBBCF8;cursor:pointer;");
+        }
+
+        function estilo2() {
+            actual = $(this).attr("id");
+
+            if ($("#memoria").val() == actual) return;
+
+            $("#" + actual).attr("style", "font-size:15px;border-bottom-style:groove;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;color:#000000;background-color:#FFFFFF;cursor:default;");
+        }
+
+
+
+
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:HiddenField ID="cmd" runat="server" />
+        <asp:HiddenField ID="ids" runat="server" />
+        <asp:HiddenField ID="serial" runat="server" />
+        <asp:HiddenField ID="iduser" runat="server" />
+        <asp:HiddenField ID="idrondin" runat="server" />
+        <asp:HiddenField ID="memoria" runat="server" />
+
+
+        <center>
+<asp:Label ID="laberror" runat="server"></asp:Label>
+<asp:Label ID="labhead" runat="server" Font-Size="Larger"></asp:Label>
+<br /><br />
+
+
+<table border="1">
+    <tr valing="top">
+        <td>
+             <table cellspacing="1" style="border-collapse:collapse;">
+             <tr id="larow2">
+             <th align="left" width="60">Id</th>
+             <th align="left" width="130">Serial</th>
+             <th align="left" width="130">Asignada</th>
+             </tr>
+             </table>
+             <asp:Panel ID="pan20" runat="server" ScrollBars="Auto">
+                <asp:GridView ID="gv3" runat="server" GridLines="None" onrowdatabound="data_enlace3"></asp:GridView>
+             </asp:Panel>
+            Ubicación:<br />
+            <asp:TextBox ID="t1" runat="server" MaxLength="100" Width="300px"></asp:TextBox>
+             <center><input id="boton4" type="button" value="Agregar Punto" onclick="act_boton4();" /></center>
+        </td>
+        <td valing="top">
+            <asp:Panel ID="pan40" runat="server" ScrollBars="Auto">
+                <table id="gv40" border="0">
+                    <tr id="larow3">
+                        <td>Idtarjeta</td>
+                        <td>Serial</td>
+                        <td>Ubicación</td>
+                    </tr>
+                </table>
+            </asp:Panel>
+        </td>
+    </tr>
+</table>
+
+
+
+
+
+ 
+
+
+
+
+
+
+<br />
+<input id="boton2" type="button" onclick="act_boton();" />
+<input id="boton3" type="button" onclick="act_boton2();" />
+</center>
+
+
+    </form>
+</body>
+</html>

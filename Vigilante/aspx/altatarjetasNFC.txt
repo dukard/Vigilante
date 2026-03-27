@@ -1,0 +1,564 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeFile="altatarjetasNFC.aspx.cs" Inherits="aspx_altatarjetasNFC" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <link rel="stylesheet" href="../css/jquery-ui20.css" />
+    <link rel='stylesheet' href='../css/estilon.css' />
+     <style>
+
+         
+html {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    font-family: arial;
+    /*background-color: #FFFFFF;*/    
+}
+
+body {
+    margin: 0;
+}
+
+     #tablon {
+         /* From https://css.glass */
+         display:inline-block;
+         padding:100px;
+         background: rgba(255, 255, 255, 0.21);
+         border-radius: 16px;
+         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+         backdrop-filter: blur(3.5px);
+         -webkit-backdrop-filter: blur(3.5px);
+         border: 1px solid rgba(255, 255, 255, 0.84);
+     }
+
+     
+    #t1 {
+        background-color: rgba(7,65,158,0.8);
+        border-radius: 12px;
+        border: 0;
+        box-sizing: border-box;
+        color: #fff;
+        font-size: 18px;        
+        outline: 0;
+        padding: 4px 20px 0;
+        width: 150px;
+        height: 30px;
+    }
+
+    #t1::placeholder {
+        color: #fff;
+        opacity: 0.7; /* Firefox */
+    }
+
+
+
+     
+    #enviar{
+        cursor:pointer;
+    }
+
+ </style>
+  <script type="text/javascript" src="../js/jquery-3.6.0.js"></script>
+  <script type="text/javascript" src="../js/filters.js"></script>
+  <script type="text/javascript" src="../js/jquery-ui20.js"></script>
+  <script type="text/javascript">
+      var x,igual;
+      x = $(document);
+      x.ready(def_eventos);
+
+      function def_eventos() {
+          $("#enviar").click(cargar);
+          otravez();
+          $("#gv").attr("style", "border-collapse:collapse;");
+          $("[id^='gv_nek0']").attr("style", "padding: 0px 0px 0px 5px;overflow:hidden;width:40px;");
+          $("[id^='gv_nek1']").attr("style", "padding: 0px 0px 0px 5px;overflow:hidden;width:155px;");
+          $("[id^='gv_nek2']").attr("style", "padding: 0px 0px 0px 5px;overflow:hidden;width:155px;");
+          $("[id^='gv_nek3']").attr("style", "padding: 0px 0px 0px 5px;overflow:hidden;width:85px;");
+          $("[id^='gv_nek4']").attr("style", "padding: 0px 0px 0px 5px;overflow:hidden;width:155px;");
+          $("[id^='gv_nek5']").attr("style", "padding: 0px 0px 0px 5px;overflow:hidden;width:155px;");
+          $("[id^='gv_nek6']").attr("style", "padding: 0px 0px 0px 5px;overflow:hidden;width:210px;");
+          $("[id^='gv_nek7']").attr("style", "padding: 0px 0px 0px 5px;overflow:hidden;width:120px;");
+          $("[id^='gv_nek8']").attr("style", "padding: 0px 0px 0px 5px;overflow:hidden;width:120px;");
+          $("[id^='gv_nek9']").attr("style", "padding: 0px 0px 0px 5px;overflow:hidden;width:120px;");
+          otravez3();
+          $("#gv3").attr("style", "border-collapse:collapse;");
+          $("[id^='gv3_wa0']").attr("style", "padding: 0px 0px 0px 5px;overflow:hidden;height:20px;width:50px;");
+          $("[id^='gv3_wa1']").attr("style", "padding: 0px 0px 0px 5px;overflow:hidden;height:20px;width:120px;");
+          $("[id^='gv3_wa2']").attr("style", "padding: 0px 0px 0px 5px;overflow:hidden;height:20px;width:120px;");
+          $("#lacab").attr("style", "font-size:15px;border-right-style:groove;border-left-style:groove;border-bottom-style:groove;border-right-width:thin;border-left-width:thin;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;background-color:#FFFFFF;color:#FFFFFF");
+          $("#lacab").attr("align", "left");
+          $("[class^='cam']").attr("style", "font-size:15px;border-right-style:groove;border-left-style:groove;border-bottom-style:groove;border-right-width:thin;border-left-width:thin;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;background-color:#FFFFFF;");
+          $("[class^='cam']").hover(estilo5, estilo6);
+          ////$("[class^='cam']").click(function () { $("#t3").val($.trim($("#" + $(this).attr("id") + " td:first-child").text().toString())); });
+          $("[class^='cam']").click(function () { $("#t3").val($.trim($("#" + $(this).attr("id") + " td:nth-child(1)").text().toString())); $("#marca").val($.trim($("#" + $(this).attr("id") + " td:nth-child(2)").text().toString())); $("#agencia").val($.trim($("#" + $(this).attr("id") + " td:nth-child(3)").text().toString())); });
+
+          $("#larow").attr("style", "font-size:15px;border-right-style:groove;border-left-style:groove;border-bottom-style:groove;border-right-width:thin;border-left-width:thin;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;background-color:#002451;color:#FFFFFF");
+          $("#larow2").attr("style", "font-size:15px;border-right-style:groove;border-left-style:groove;border-bottom-style:groove;border-right-width:thin;border-left-width:thin;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;background-color:#002451;color:#FFFFFF");
+          $("#encab0").attr("style", "font-size:15px;background-color:#FFFFFF;color:#FFFFFF");
+          $("[class^='hor']").attr("style", "font-size:15px;border-right-style:groove;border-left-style:groove;border-bottom-style:groove;border-right-width:thin;border-left-width:thin;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;background-color:#FFFFFF;");
+          $("[class^='hor']").hover(estilo1, estilo2);
+          $("[class^='hor']").click(memclick);
+          ////$("#pan1").attr("style", "width:" + ($("#gv").width() + 25) + "px;height:" + (screen.height - 220).toString() + "px;overflow:auto;");
+          $("#pan1").attr("width", (((screen.width) * 95) / 100));
+          $("#pan1").attr("height", ((screen.height * 80) / 100));
+          $("#boton3").attr("value", "Cancelar");
+
+          if ($("#cmd").val() == "") $("#snuevo").hide();
+          else {
+              switch ($("#cmd").val()) {
+                  case "nuevo": $("#boton2").attr("value", "Agregar"); break;
+                  case "editar": $("#boton2").attr("value", "Editar"); break;
+              }
+          }
+
+          $("#box").keyup(function () {
+              $.uiTableFilter($('#gv'), this.value);
+          });
+
+
+          $("a").tooltip({
+              //content: "que pedo?",
+              //track: true, 
+              show: {
+                  effect: "slide",
+              },
+              /*hide: {
+                  effect: "slide",
+              },*/
+              position: {
+                  my: "left right",
+                  at: "right center",
+                  using: function (position, feedback) {
+                      $(this).css(position);
+                      /*$("<div>")
+                          .addClass("arrow")
+                          .addClass(feedback.vertical)
+                          .addClass(feedback.horizontal)
+                          .appendTo(this);*/
+                  }
+              }
+          });
+
+          $("a").click(radial);
+
+      }
+
+      function cargar() {
+          $("#cmd").val("env_pass");
+          document.forms[0].submit();
+      }
+
+
+      function memclick() {
+
+          actual = $(this).attr("id");
+
+          $("[class^='hor']").attr("style", "font-size:15px;border-right-style:groove;border-left-style:groove;border-bottom-style:groove;border-right-width:thin;border-left-width:thin;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;background-color:#FFFFFF;");
+          $("#" + actual).attr("style", "font-size:15px;font-weight: bold;border-right-style:groove;border-left-style:groove;border-bottom-style:groove;border-right-width:thin;border-left-width:thin;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;background-color:#DBBCF8;cursor:pointer;");
+
+          if ($("#memoria").val() != "") {
+              if ($("#memoria").val() == actual) {
+                  //es igual
+                  $("#" + actual).attr("style", "font-size:15px;border-right-style:groove;border-left-style:groove;border-bottom-style:groove;border-right-width:thin;border-left-width:thin;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;background-color:#FFFFFF;");
+                  $("#memoria").val("");
+                  $("#ids").val("");
+                  return;
+              }
+              else {
+                  //no es igual
+
+              }
+          }
+
+
+          /////////$("#marca").val($.trim($("#" + $(this).attr("id") + " td:nth-child(4)").text().toString()));
+          ////////$("#agencia").val($.trim($("#" + $(this).attr("id") + " td:nth-child(5)").text().toString()));
+          $("#memoria").val(actual);
+          $("#ids").val($.trim($("#" + actual + " td:nth-child(1)").text().toString()));
+      }
+
+
+
+      function radial() {
+          este = $("#memoria").val();
+
+          switch ($(this).attr("id")) {
+              case "E1": nuevo(); break;
+              case "E2": if (este == "") { alert("Seleccione una fila."); return; } $("#ids").val($.trim($("#" + este + " td:nth-child(1)").text().toString())); editar($.trim($("#" + este + " td:nth-child(2)").text().toString()), $.trim($("#" + este + " td:nth-child(3)").text().toString()), $.trim($("#" + este + " td:nth-child(7)").text().toString()), $.trim($("#" + este + " td:nth-child(8)").text().toString()), $.trim($("#" + este + " td:nth-child(9)").text().toString()), $.trim($("#" + este + " td:nth-child(10)").text().toString())); break;
+              case "E9": if (este == "") { alert("Seleccione una fila."); return; } $("#ids").val($.trim($("#" + este + " td:nth-child(1)").text().toString())); $("#cmd").val("borrar"); document.forms[0].submit(); break;
+          }
+      }
+
+      function nuevo() {
+          $("#pan3").hide();
+          $("#boton").hide();
+          $("#snuevo").show();
+          $("#boton2").attr("value", "Agregar");
+          $("#t1").val("");
+          $("#t2").val("");
+          $("#t3").val("");
+          $("#t4").val("");
+          $("#t5").val("");
+          $("#t6").val("");
+          $("#t7").val("");
+          $("#marca").val("");
+          $("#agencia").val("");
+      }
+
+      function editar(nombres, apellidos, email, tel, log, pass) {
+          $("#pan3").hide();
+          $("#snuevo").show();
+          $("#boton2").attr("value", "Editar");
+          $("#t1").val(nombres);
+          $("#t2").val(apellidos);
+          $("#t4").val(email);
+          $("#t5").val(tel);
+          $("#t6").val(log);
+          $("#t7").val(pass);
+          $("#secreto").hide();
+      }
+
+      function act_boton() {
+          switch ($("#boton2").attr("value")) {
+              case "Agregar": if (chekeo(true)) { return; } $("#cmd").val("nuevo"); break;
+              case "Editar": if (chekeo(false)) { return; } $("#cmd").val("editar"); break;
+          }
+          document.forms[0].submit();
+      }
+
+      function act_boton2() {
+          $("#pan3").show();
+          $("#boton").show();
+          $("#snuevo").hide();
+      }
+
+      function chekeo(quien) {
+          if (quien) {
+              if ($.trim($("#t1").val()) == "" || $.trim($("#t2").val()) == "" || $.trim($("#t3").val()) == "" || $.trim($("#t4").val()) == "" || $.trim($("#t5").val()) == "" || $.trim($("#t6").val()) == "" || $.trim($("#t7").val()) == "") { alert("Algunos campos son requeridos."); return true; }
+          }
+          else {
+              if ($.trim($("#t1").val()) == "" || $.trim($("#t2").val()) == "" || $.trim($("#t4").val()) == "" || $.trim($("#t5").val()) == "" || $.trim($("#t6").val()) == "" || $.trim($("#t7").val()) == "") { alert("Algunos campos son requeridos."); return true; }
+          }
+          if (!email_val($.trim($("#t4").val()))) { alert("Correo no válido."); return true; }
+          if (chk_int($.trim($("#t3").val()))) { alert("Agencia:sólo numero entero."); return true; }
+          return false;
+      }
+
+      function email_val(correo) {
+          var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+          return regex.test(correo);
+      }
+
+      function chk_int(valor) {
+          var n, num;
+          for (n = 0; n < valor.length; n++) {
+              num = valor.charCodeAt(n);
+              if (!((num > 47) && (num < 58))) return true;
+          }
+
+          return false;
+      }
+
+      function otravez() {
+          var i;
+
+          i = 0;
+          $("#gv tr").each(function () {
+              if (i > 0) {
+                  $(this).attr("id", $.trim($(this).children(":eq(0)").text()) + "_" + i);
+                  $(this).attr("class", "hor" + i);
+                  $(this).children(":first").attr("id", "ver" + i);
+              }
+              else {
+                  $(this).attr("id", "encab0");
+              }
+              i++;
+          }
+          );
+      }
+
+      function otravez3() {
+          var i;
+
+          i = 0;
+          $("#gv3 tr").each(function () {
+              if (i > 0) {
+                  $(this).attr("id", $.trim($(this).children(":eq(0)").text()) + "_" + i + "gv3");
+                  $(this).attr("class", "cam" + i);
+                  $(this).children(":first").attr("id", "imp" + i);
+              }
+              else {
+                  $(this).attr("id", "lacab");
+              }
+              i++;
+          }
+          );
+      }
+
+      function estilo1() {
+          $("#" + $(this).attr("id")).attr("style", "font-size:15px;font-weight: bold;border-right-style:groove;border-left-style:groove;border-bottom-style:groove;border-right-width:thin;border-left-width:thin;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;background-color:#DBBCF8;cursor:pointer;");
+      }
+
+      function estilo2() {
+          actual = $(this).attr("id");
+
+          if ($("#memoria").val() == actual) return;
+
+          $("#" + actual).attr("style", "font-size:15px;border-bottom-style:groove;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;background-color:#FFFFFF;cursor:default;");
+      }
+
+      function estilo5() {
+          $("#" + $(this).attr("id")).attr("style", "font-size:15px;font-weight: bold;border-right-style:groove;border-left-style:groove;border-bottom-style:groove;border-right-width:thin;border-left-width:thin;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;background-color:#DBBCF8;cursor:pointer;");
+      }
+
+      function estilo6() {
+          $("#" + $(this).attr("id")).attr("style", "font-size:15px;border-right-style:groove;border-left-style:groove;border-bottom-style:groove;border-right-width:thin;border-left-width:thin;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;background-color:#FFFFFF;cursor:default;");
+      }
+
+
+
+  </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:HiddenField ID="cmd" runat="server" />
+<asp:HiddenField ID="ids" runat="server" />
+<asp:HiddenField ID="marca" runat="server" />
+<asp:HiddenField ID="agencia" runat="server" />
+<asp:HiddenField ID="memoria" runat="server" />
+        
+        <asp:Panel ID="tablon" runat="server">
+            <asp:TextBox ID="t1" runat="server" MaxLength="20" TextMode="Password" placeholder="Password" Width="300px"></asp:TextBox><br /><br />
+            <img id="enviar" src="../img/env_bot.png" height="30" />
+        </asp:Panel>
+
+        <asp:Panel ID="pan3" runat="server">
+
+            <div id="lacaja">
+                <center>
+                    <table>
+                        <tr>
+                            <td>
+                                <table cellspacing="1" id="latabla" style="border-collapse: collapse;">
+                                    <tr id="larow">
+                                        <th align="left" width="50">Id</th>
+                                        <th align="left" width="160">IdUser</th>
+                                        <th align="left" width="160">Serial</th>
+                                        <th align="left" width="90">Asignada</th>
+                                        <th align="left" width="130">Fecha</th>
+                                        <th align="left" width="130">Hora</th>
+                                    </tr>
+                                </table>
+                                <asp:Panel ID="pan1" runat="server">
+                                    <asp:GridView ID="gv" runat="server" GridLines="None" OnRowDataBound="data_enlace"></asp:GridView>
+                                </asp:Panel>
+                            </td>
+                        </tr>
+                    </table>
+                </center>
+            </div>
+        </asp:Panel>
+
+    
+    </form>
+</body>
+</html>
+
+
+
+
+=============================================================================================================
+
+
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+using intra_library;
+
+public partial class aspx_altatarjetasNFC : System.Web.UI.Page
+{
+    DataTable dt1;
+    funciones obj;
+    string error;
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (Page.IsPostBack)
+        {
+            try
+            {
+                if (cmd.Value == "env_pass")
+                {
+                    obj = new funciones();
+                    try
+                    {
+                        if (get_pass())
+                        {
+                            pan3.Visible = true;
+                            tablon.Visible = false;
+                        }
+                        else
+                        {
+                            Response.Write("<center>" + error + "</center>");
+                        }
+                    }
+                    catch (Exception er)
+                    {
+                        Response.Write("<center>" + er.ToString() +"</center>");
+                        obj = null;
+                    }
+                }
+            }
+            catch (Exception er)
+            {
+                Response.Write("<center>" + er.ToString() + "</center>");
+            }
+        }
+        else pan3.Visible = false;
+    }
+
+
+    private bool get_pass()
+    {
+        try
+        {
+            if (obj.conexion("cons", "select * from psw_tarjetas_nfc where password='" + t1.Text.Trim() + "'"))
+            {
+                if (obj.dt.Rows.Count < 1)
+                {
+                    error = "Sin Datos";
+                    obj.dt.Dispose();
+                    return false;
+                }
+                else
+                {
+                    if (obj.conexion("cons", "select * from Tregistro_tarjetasNFC order by id desc,iduser"))
+                    {
+                        if (obj.dt.Rows.Count < 1)
+                        {
+                            error = "Sin Datos";
+                            obj.dt.Dispose();
+                            return false;
+                        }
+                        else
+                        {
+                            gv.DataSource = obj.dt;
+                            obj.dt.Dispose();
+                            gv.DataBind();
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        error = obj.error;
+                        obj.dt.Dispose();
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                error = obj.error;
+                obj.dt.Dispose();
+                return false;
+            }
+        }
+        catch (Exception er)
+        {
+            error = er.ToString();
+            return false;
+        }
+    }
+
+
+    protected void data_enlace(object sender, GridViewRowEventArgs e)
+    {
+        try
+        {
+            if (e.Row.DataItemIndex > -1)
+            {
+                if (e.Row.DataItemIndex == 0)
+                {
+                    gv.HeaderRow.Cells[0].Text = "Id";
+                    gv.HeaderRow.Cells[0].HorizontalAlign = HorizontalAlign.Left;
+                    gv.HeaderRow.Cells[1].Text = "IdUser";
+                    gv.HeaderRow.Cells[1].HorizontalAlign = HorizontalAlign.Left;
+                    gv.HeaderRow.Cells[2].Text = "Serial";
+                    gv.HeaderRow.Cells[2].HorizontalAlign = HorizontalAlign.Left;
+                    gv.HeaderRow.Cells[3].Text = "Asignada";
+                    gv.HeaderRow.Cells[3].HorizontalAlign = HorizontalAlign.Left;
+                    gv.HeaderRow.Cells[4].Text = "Fecha";
+                    gv.HeaderRow.Cells[4].HorizontalAlign = HorizontalAlign.Left;
+                    gv.HeaderRow.Cells[5].Text = "Hora";
+                    gv.HeaderRow.Cells[5].HorizontalAlign = HorizontalAlign.Left;
+                }
+
+                Panel div = new Panel();
+                String ids = e.Row.Cells[0].Text.ToString();
+                div.ID = "nek0_" + ids;
+                div.Controls.Add(new LiteralControl(ids));
+                e.Row.Cells[0].Text = "";
+                e.Row.Cells[0].Controls.Add(div);
+                div = null;
+
+                div = new Panel();
+                div.ID = "nek1_" + ids;
+                div.Controls.Add(new LiteralControl(e.Row.Cells[1].Text.Trim()));
+                e.Row.Cells[1].Text = "";
+                e.Row.Cells[1].Controls.Add(div);
+                div = null;
+
+                div = new Panel();
+                div.ID = "nek2_" + ids;
+                div.Controls.Add(new LiteralControl(e.Row.Cells[2].Text.Trim()));
+                e.Row.Cells[2].Text = "";
+                e.Row.Cells[2].Controls.Add(div);
+                div = null;
+
+                div = new Panel();
+                div.ID = "nek3_" + ids;
+                div.Controls.Add(new LiteralControl(e.Row.Cells[3].Text.Trim()));
+                e.Row.Cells[3].Text = "";
+                e.Row.Cells[3].Controls.Add(div);
+                div = null;
+
+                div = new Panel();
+                div.ID = "nek4_" + ids;
+                div.Controls.Add(new LiteralControl(e.Row.Cells[4].Text.Trim()));
+                e.Row.Cells[4].Text = "";
+                e.Row.Cells[4].Controls.Add(div);
+                div = null;
+
+                div = new Panel();
+                div.ID = "nek5_" + ids;
+                div.Controls.Add(new LiteralControl(e.Row.Cells[5].Text.Trim()));
+                e.Row.Cells[5].Text = "";
+                e.Row.Cells[5].Controls.Add(div);
+                div = null;
+
+                
+
+            }
+        }
+        catch (Exception er)
+        {
+            Response.Write(er.ToString());
+        }
+    }
+
+
+
+
+
+
+
+}
