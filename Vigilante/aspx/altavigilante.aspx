@@ -33,6 +33,11 @@
             box-shadow: 0 0 7px black;*/
 }
 
+#pan20 {
+    /*width: 30vw;
+    height: 100vh;*/
+}
+
 
 
 /*       
@@ -110,8 +115,8 @@
             otravez3();
             $("#gv3").attr("style", "border-collapse:collapse;");
             $("[id^='gv3_wa0']").attr("style", "padding: 0px 0px 0px 5px;overflow:hidden;height:20px;width:50px;");
-            $("[id^='gv3_wa1']").attr("style", "padding: 0px 0px 0px 5px;overflow:hidden;height:20px;width:120px;");
-            $("[id^='gv3_wa2']").attr("style", "padding: 0px 0px 0px 5px;overflow:hidden;height:20px;width:120px;");
+            $("[id^='gv3_wa1']").attr("style", "padding: 0px 0px 0px 5px;overflow:hidden;height:20px;width:150px;");
+            $("[id^='gv3_wa2']").attr("style", "padding: 0px 0px 0px 5px;overflow:hidden;height:20px;width:250px;");
             $("#lacab").attr("style", "font-size:15px;border-right-style:groove;border-left-style:groove;border-bottom-style:groove;border-right-width:thin;border-left-width:thin;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;background-color:#FFFFFF;color:#FFFFFF");
             $("#lacab").attr("align", "left");
             $("[class^='cam']").attr("style", "font-size:15px;border-right-style:groove;border-left-style:groove;border-bottom-style:groove;border-right-width:thin;border-left-width:thin;border-bottom-width:thin;border-top-style: groove;border-top-width: thin;background-color:#FFFFFF;");
@@ -534,21 +539,21 @@
          <table>
          <tr>
          <td class="tname" align="right">Nombres:</td>
-         <td><asp:TextBox ID="t1" runat="server" MaxLength="50" Width="300px" autocomplete="off"></asp:TextBox></td>
+         <td><asp:TextBox ID="t1" runat="server" MaxLength="50" Width="460px" autocomplete="off"></asp:TextBox></td>
          </tr>         
          <tr>
          <td class="tname" align="right">Apellidos:</td>
-         <td><asp:TextBox ID="t2" runat="server" MaxLength="50" Width="300px" autocomplete="off"></asp:TextBox></td>
+         <td><asp:TextBox ID="t2" runat="server" MaxLength="50" Width="460px" autocomplete="off"></asp:TextBox></td>
          </tr>
          <tr id="secreto">
          <td class="tname" align="right" valign="top">Agencia:</td>
          <td>
-            <asp:TextBox ID="t3" runat="server" MaxLength="5" Width="300px" autocomplete="off"></asp:TextBox>
+            <asp:TextBox ID="t3" runat="server" MaxLength="5" Width="460px" autocomplete="off"></asp:TextBox>
             <table cellspacing="1" style="border-collapse:collapse;">
 	        <tr id="larow2">
             <th align="left" width="60">Id</th>
-            <th align="left" width="130">Marca</th>
-            <th align="left" width="130">Agencia</th>
+            <th align="left" width="150">Marca</th>
+            <th align="left" width="250">Agencia</th>
 		    </tr>            </table>
             <asp:Panel ID="pan20" runat="server" Height="150px" ScrollBars="Auto">
              <asp:GridView ID="gv3" runat="server" GridLines="None" onrowdatabound="data_enlace3"></asp:GridView>
@@ -557,19 +562,19 @@
          </tr>
          <tr>
          <td class="tname" align="right">Email:</td>
-         <td><asp:TextBox ID="t4" runat="server" MaxLength="30" Width="300px" autocomplete="off"></asp:TextBox></td>
+         <td><asp:TextBox ID="t4" runat="server" MaxLength="30" Width="460px" autocomplete="off"></asp:TextBox></td>
          </tr>
          <tr>
          <td class="tname" align="right">Teléfono:</td>
-         <td><asp:TextBox ID="t5" runat="server" MaxLength="50" Width="300px" autocomplete="off"></asp:TextBox></td>
+         <td><asp:TextBox ID="t5" runat="server" MaxLength="50" Width="460px" autocomplete="off"></asp:TextBox></td>
          </tr>
          <tr>
          <td class="tname" align="right">Login:</td>
-         <td><asp:TextBox ID="t6" runat="server" MaxLength="15" Width="300px" autocomplete="off"></asp:TextBox></td>
+         <td><asp:TextBox ID="t6" runat="server" MaxLength="15" Width="460px" autocomplete="off"></asp:TextBox></td>
          </tr>
          <tr>
          <td class="tname" align="right">Pass:</td>
-         <td><asp:TextBox ID="t7" runat="server" MaxLength="15" Width="300px" autocomplete="off"></asp:TextBox></td>
+         <td><asp:TextBox ID="t7" runat="server" MaxLength="15" Width="460px" autocomplete="off"></asp:TextBox></td>
          </tr>         
          </table>
          <input id="boton2" type="button" onclick="act_boton();" />

@@ -57,6 +57,10 @@
 			<span class="tooltip">Reporte de Rondines</span>
 		</li>
         <li>
+            <img  id="icono8" width="40" height="40" src="../img/visita01.png" />
+            <span class="tooltip">Reporte de Visitas</span>
+        </li>
+        <li>
 	        <img id="icono6" width="40" height="40" src="../img/email.png" />
 	        <span class="tooltip">Admin Email Reporte Rondines</span>
         </li>
@@ -325,7 +329,7 @@
                     setTimeout(function () {
                         $('nav.main-nav').toggleClass('toggled');
                     }, 50);
-                    $('.sidebar-navigation').fadeIn();                    
+                    $('.sidebar-navigation').fadeIn();
                 }
                 else {
                     setTimeout(function () {
@@ -366,7 +370,7 @@
 
                     setTimeout(function () {
                         $('.sidebar-navigation').fadeOut();
-                    }, 900);                    
+                    }, 900);
                 }
 
                 ventana = !ventana;
@@ -385,11 +389,12 @@
                     case "icono5": pagina = "reporterondin.aspx" + "?iduser=" + $("#iduser").val(); break;
                     case "icono6": pagina = "adminemail.aspx"; break;
                     case "icono7": pagina = "calendar_rondines.aspx" + "?iduser=" + $("#iduser").val(); break;
+                    case "icono8": pagina = "reportevisita.aspx" + "?iduser=" + $("#iduser").val(); break;
                 }
 
                 $("#ventana2").attr("src", pagina);
 
-                
+
                 e.preventDefault();
 
             });
@@ -397,7 +402,7 @@
 
 
         }); //doc-rdy
-//# sourceURL=pen.js
+        //# sourceURL=pen.js
     </script>
 
 

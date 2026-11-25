@@ -255,7 +255,7 @@ public partial class aspx_registrosNFC : System.Web.UI.Page
     {
         try
         {
-            if (obj.conexion("cons", "select * from Tnfc_scan with (nolock) order by id desc"))
+            if (obj.conexion("cons", "select TOP 1000 * from Tnfc_scan with (nolock) order by id desc"))
             {
                 if (obj.dt.Rows.Count < 1)
                 {
@@ -268,7 +268,7 @@ public partial class aspx_registrosNFC : System.Web.UI.Page
                     dt1 = obj.dt.Copy();
                     obj.dt.Dispose();
 
-                    elquery.Value = "select * from Tnfc_scan with (nolock) order by id desc";
+                    elquery.Value = "select TOP 1000 * from Tnfc_scan with (nolock) order by id desc";
 
                     if (cmd.Value == "exportar")
                     {
